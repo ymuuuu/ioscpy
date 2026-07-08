@@ -10,7 +10,7 @@
 - [ ] Performance optimization
 - [ ] Custom Buttons Actions (Macros)
 
-A macOS and Linux CLI that mirrors and controls a jailbroken iPhone over USB.
+A macOS, Linux, and Windows CLI that mirrors and controls a jailbroken iPhone over USB.
 
 With one device attached, that is all you need. It connects on its own.
 
@@ -130,9 +130,9 @@ H.264 decoding works on Linux through the `openh264` software decoder. Pass
 
 There is no prebuilt for Windows yet. Build the host from source. The device package is the same as on macOS and Linux, installed from the Sileo/Zebra repo.
 
-ioscpy on Windows reuses the USB tooling an iOS setup already has, and does **not** replace any driver, so Frida, objection, ideviceinfo, and iTunes, grapefruit and any tool that uses it keep working while it runs.
+ioscpy on Windows reuses the USB tooling an iOS setup already has, and does **not** replace any driver, so Frida, objection, grapefruit, ideviceinfo, iTunes, and any other usbmux tool keep working while it runs.
 
-### 1. USB stack 
+### 1. USB stack
 
 - **Apple Mobile Device Support**  installed with iTunes from apple.com (get the
   Apple-website build, not the Microsoft Store one), or the standalone AMDS
@@ -146,7 +146,7 @@ ioscpy on Windows reuses the USB tooling an iOS setup already has, and does **no
 
       pacman -S mingw-w64-x86_64-libimobiledevice
 
-  Make sure the three `.exe` are on your `PATH` (or drop them next to
+  Make sure the three `.exe` files are on your `PATH` (or drop them next to
   `ioscpy.exe`). Check with `idevice_id -l`  it should print your device UDID.
 
 ### 2. Build toolchain
@@ -228,7 +228,7 @@ this in. Rootful and other iOS versions especially need testing.
 ## Layout
 
 ```text
-host/       Rust host CLI (macOS and Linux)
+host/       Rust host CLI (macOS, Linux, and Windows)
 device/     iOS package (Theos): daemon, ctl, tweak, jbcompat, packaging
 protocol/   wire format docs, kept in lockstep with the code
 scripts/    device deploy, respring, log, and diagnostics helpers
