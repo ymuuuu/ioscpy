@@ -48,7 +48,9 @@ arboard = { version = "3", default-features = false, features = ["wayland-data-c
 # which doesn't build here), plus getrandom for the handshake nonce (no /dev/urandom).
 [target.'cfg(target_os = "windows")'.dependencies]
 arboard = { version = "3", default-features = false }
-getrandom = "0.2"
+# 0.3 (uses getrandom::fill) aligns with the version already in the tree, avoiding
+# an extra major line in Cargo.lock.
+getrandom = "0.3"
 
 [target.'cfg(target_os = "macos")'.build-dependencies]
 cc = "1"

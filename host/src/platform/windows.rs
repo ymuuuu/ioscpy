@@ -42,5 +42,6 @@ pub fn os_version() -> String {
 
 pub fn missing_tools_hint() -> &'static str {
     "Install Apple Mobile Device Support (from iTunes) and libimobiledevice-win32, \
-     then put iproxy.exe and idevice_id.exe on your PATH or next to ioscpy.exe."
+     then put iproxy.exe, idevice_id.exe, and ideviceinfo.exe on your PATH or next \
+     to ioscpy.exe."
 }

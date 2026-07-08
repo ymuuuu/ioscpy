@@ -134,10 +134,10 @@ ioscpy on Windows reuses the USB tooling an iOS setup already has, and does **no
 
 ### 1. USB stack
 
-- **Apple Mobile Device Support**  installed with iTunes from apple.com (get the
+- **Apple Mobile Device Support**: installed with iTunes from apple.com (get the
   Apple-website build, not the Microsoft Store one), or the standalone AMDS
   package. This provides the USB driver and usbmuxd. iTunes must see the phone.
-- **libimobiledevice-win32**  provides `iproxy.exe`, `idevice_id.exe`,
+- **libimobiledevice-win32**: provides `iproxy.exe`, `idevice_id.exe`,
   `ideviceinfo.exe`. Install with [Scoop](https://scoop.sh):
 
       scoop install libimobiledevice
@@ -147,14 +147,14 @@ ioscpy on Windows reuses the USB tooling an iOS setup already has, and does **no
       pacman -S mingw-w64-x86_64-libimobiledevice
 
   Make sure the three `.exe` files are on your `PATH` (or drop them next to
-  `ioscpy.exe`). Check with `idevice_id -l`  it should print your device UDID.
+  `ioscpy.exe`). Check with `idevice_id -l`, which should print your device UDID.
 
 ### 2. Build toolchain
 
-- **Rust** with the MSVC toolchain  install from [rustup.rs](https://rustup.rs).
+- **Rust** with the MSVC toolchain: install from [rustup.rs](https://rustup.rs).
 - **Visual Studio Build Tools** with the C++ workload (the `openh264` decoder
   compiles a small C library through `cc`).
-- **nasm** on `PATH`  `openh264`'s assembler (`scoop install nasm`).
+- **nasm** on `PATH`: `openh264`'s assembler (`scoop install nasm`).
 
 ### 3. Build and run
 
@@ -170,9 +170,9 @@ build, confirm `nasm` is on `PATH`.
 ## First touch
 
 > After a respring or a fresh connection, give the phone one physical tap on its
-> screen before driving it from the Host. iOS only trusts touch events that come
+> screen before driving it from the host. iOS only trusts touch events that come
 > from the real digitizer, so that first real tap is what lets the injected ones
-> through. You do it once, then the Host takes over.
+> through. You do it once, then the host takes over.
 
 ## Controls
 
@@ -184,6 +184,9 @@ build, confirm `nasm` is on `PATH`.
 - Cmd+A, Cmd+C, Cmd+V, Cmd+X, Cmd+Z: Select All, Copy, Paste, Cut, Undo. The
   clipboard syncs both ways, so Cmd+C on the phone reaches the Mac.
 - Enter, Backspace, Tab, arrows: the matching editing keys.
+
+On Linux and Windows, use **Ctrl** in place of Cmd for these shortcuts (Ctrl+C,
+Ctrl+V, and so on); the clipboard still syncs both ways.
 
 Rotating the phone rotates and resizes the mirror.
 

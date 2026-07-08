@@ -1,6 +1,7 @@
 //! macOS + Linux implementation of the platform seam. This reproduces the
 //! behavior the host had before the seam existed: bare tool names resolved by
-//! `Command` via PATH, the macOS cache dir, `sw_vers`/`uname`, and the existing
+//! `Command` via PATH, the per-OS cache dir (macOS `~/Library/Caches/ioscpy`,
+//! Linux `$XDG_CACHE_HOME`/`~/.cache`), `sw_vers`/`uname`, and the existing
 //! install hints.
 
 use std::path::PathBuf;

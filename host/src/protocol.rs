@@ -395,16 +395,30 @@ pub struct DaemonError {
 /// handshake nonce just has to be unique.
 pub fn random_hex(bytes: usize) -> String {
     let mut buf = vec![0u8; bytes];
-    #[cfg(not(target_os = "windows"))]
-    {
-        use std::io::Read;
-        if let Ok(mut f) = std::fs::File::open("/dev/urandom") {
-            let _ = f.read_exact(&mut buf);
+    let filled = {
+        #[cfg(not(target_os = "windows"))]
+        {
+            use std::io::Read;
+            std::fs::File::open("/dev/urandom")
+                .and_then(|mut f| f.read_exact(&mut buf))
+                .is_ok()
         }
-    }
-    #[cfg(target_os = "windows")]
-    {
-        let _ = getrandom::getrandom(&mut buf);
+        #[cfg(target_os = "windows")]
+        {
+            getrandom::fill(&mut buf).is_ok()
+        }
+    };
+    if !filled {
+        // OS RNG unavailable (very rare). Seed from time + pid so the nonce is
+        // still unique per call instead of the all-zero buffer above.
+        let seed = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_nanos())
+            .unwrap_or(0)
+            ^ u128::from(std::process::id());
+        for (i, b) in buf.iter_mut().enumerate() {
+            *b = (seed >> ((i % 16) * 8)) as u8 ^ (i as u8);
+        }
     }
     buf.iter().map(|b| format!("{b:02x}")).collect()
 }
