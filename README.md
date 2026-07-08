@@ -146,6 +146,50 @@ sure `$HOME/.local/bin` is on your `PATH`.
 H.264 decoding works on Linux through the `openh264` software decoder. Pass
 `--mjpeg` if you prefer the MJPEG path.
 
+## Windows
+
+There is no prebuilt for Windows yet. Build the host from source. The device
+package is the same as on macOS and Linux, installed from the Sileo/Zebra repo.
+
+ioscpy on Windows reuses the USB tooling an iOS setup already has, and does **not**
+replace any driver, so Frida, objection, ideviceinfo, and iTunes keep working
+while it runs.
+
+### 1. USB stack (talk to the iPhone)
+
+- **Apple Mobile Device Support** — installed with iTunes from apple.com (get the
+  Apple-website build, not the Microsoft Store one), or the standalone AMDS
+  package. This provides the USB driver and usbmuxd. iTunes must see the phone.
+- **libimobiledevice-win32** — provides `iproxy.exe`, `idevice_id.exe`,
+  `ideviceinfo.exe`. Install with [Scoop](https://scoop.sh):
+
+      scoop install libimobiledevice
+
+  or with MSYS2:
+
+      pacman -S mingw-w64-x86_64-libimobiledevice
+
+  Make sure the three `.exe`s are on your `PATH` (or drop them next to
+  `ioscpy.exe`). Check with `idevice_id -l` — it should print your device UDID.
+
+### 2. Build toolchain
+
+- **Rust** with the MSVC toolchain — install from [rustup.rs](https://rustup.rs).
+- **Visual Studio Build Tools** with the C++ workload (the `openh264` decoder
+  compiles a small C library through `cc`).
+- **nasm** on `PATH` — `openh264`'s assembler (`scoop install nasm`).
+
+### 3. Build and run
+
+    git clone https://github.com/lautarovculic/ioscpy
+    cd ioscpy
+    cargo build --release --manifest-path host/Cargo.toml
+    .\host\target\release\ioscpy.exe --list      # confirms the device is seen
+    .\host\target\release\ioscpy.exe             # opens the mirror window
+
+Pass `--mjpeg` if you prefer the MJPEG path over H.264. If `openh264` fails to
+build, confirm `nasm` is on `PATH`.
+
 ## Tested on
 
 Hosts:
@@ -213,4 +257,5 @@ cable, on the same desk.
 For Linux hosts, same external requirement as macOS: libimobiledevice tools (`iproxy`,
   `idevice_id`, `ideviceinfo`) and `usbmuxd`.
 
-It is not for Windows, and not for iPhones that are not jailbroken.
+It now runs on Windows too, reusing the standard iOS USB tools without replacing
+any driver. It is still only for iPhones that are jailbroken.
