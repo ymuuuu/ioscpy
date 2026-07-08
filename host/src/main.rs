@@ -15,6 +15,7 @@ mod installer;
 mod keyboard;
 mod logging;
 mod mouse;
+mod platform;
 mod protocol;
 mod sidebar;
 mod update;
@@ -23,7 +24,6 @@ mod video;
 mod window;
 
 use std::net::TcpStream;
-use std::process::Command;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -561,7 +561,7 @@ fn reconnect_wait(stop: &Arc<AtomicBool>) -> bool {
 /// Diagnostics header for `--debug`.
 fn print_debug_header(cli: &Cli) {
     eprintln!("ioscpy {HOST_VERSION}");
-    eprintln!("macOS  {}", macos_version());
+    eprintln!("os     {}", platform::os_version());
     eprintln!(
         "target {}",
         cli.addr
@@ -569,14 +569,4 @@ fn print_debug_header(cli: &Cli) {
             .or_else(|| cli.device.clone())
             .unwrap_or_else(|| "auto (single attached device)".to_string())
     );
-}
-
-fn macos_version() -> String {
-    Command::new("sw_vers")
-        .arg("-productVersion")
-        .output()
-        .ok()
-        .filter(|o| o.status.success())
-        .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string())
-        .unwrap_or_else(|| "unknown".to_string())
 }

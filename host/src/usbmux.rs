@@ -44,7 +44,9 @@ impl UsbForward {
         let local_port = free_local_port()?;
         let pair = format!("{local_port}:{device_port}");
 
-        let mut child = Command::new("iproxy")
+        let iproxy = crate::platform::tool_path("iproxy")
+            .ok_or_else(|| anyhow::anyhow!("{}", crate::platform::missing_tools_hint()))?;
+        let mut child = Command::new(&iproxy)
             .arg(&pair)
             .arg("-u")
             .arg(udid)
@@ -52,7 +54,9 @@ impl UsbForward {
             .stdout(Stdio::null())
             .stderr(Stdio::null())
             .spawn()
-            .context("couldn't start the USB link. The USB tools are missing. Install them with:  brew install libimobiledevice")?;
+            .with_context(|| {
+                format!("couldn't start the USB link. {}", crate::platform::missing_tools_hint())
+            })?;
 
         let deadline = Instant::now() + Duration::from_secs(6);
         loop {

@@ -25,11 +25,13 @@ impl Device {
 }
 
 fn run(cmd: &str, args: &[&str]) -> Result<String> {
-    let out = Command::new(cmd)
+    let exe = crate::platform::tool_path(cmd)
+        .ok_or_else(|| anyhow!("couldn't find `{cmd}`. {}", crate::platform::missing_tools_hint()))?;
+    let out = Command::new(&exe)
         .args(args)
         .output()
         .with_context(|| {
-            format!("couldn't run `{cmd}`. The USB tools are missing. Install them with:  brew install libimobiledevice")
+            format!("couldn't run `{cmd}`. {}", crate::platform::missing_tools_hint())
         })?;
     if !out.status.success() {
         bail!(

@@ -16,10 +16,7 @@ const REFRESH_SECS: u64 = 24 * 60 * 60;
 
 /// Where the last known release version is cached.
 fn cache_path() -> Option<PathBuf> {
-    let home = std::env::var_os("HOME")?;
-    let mut p = PathBuf::from(home);
-    p.push("Library/Caches/ioscpy");
-    let _ = fs::create_dir_all(&p);
+    let mut p = crate::platform::cache_dir()?;
     p.push("latest_version");
     Some(p)
 }
