@@ -34,3 +34,4 @@ id_rsa*
 secrets.env
 .env
 docs/linux-h264.md
+docs/windows/
