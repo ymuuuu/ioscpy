@@ -21,6 +21,8 @@ mod sidebar;
 mod update;
 mod usbmux;
 mod video;
+#[cfg(all(unix, not(target_os = "macos")))]
+mod wayland_compat;
 mod window;
 
 use std::net::TcpStream;
@@ -39,6 +41,11 @@ const HOST_VERSION: &str = env!("CARGO_PKG_VERSION");
 fn main() {
     let cli = Cli::parse_args();
     logging::set_debug(cli.debug);
+
+    // Must run before any thread is spawned or window/clipboard is created:
+    // it may unset WAYLAND_DISPLAY for this process (issue #4).
+    #[cfg(all(unix, not(target_os = "macos")))]
+    wayland_compat::apply_decoration_workaround(cli.wayland);
 
     if let Err(e) = run(&cli) {
         eprintln!("ioscpy: error: {e:#}");

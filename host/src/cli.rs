@@ -30,6 +30,12 @@ pub struct Cli {
     #[arg(long)]
     pub mjpeg: bool,
 
+    /// Stay on native Wayland even when the compositor draws no window
+    /// decorations for us (GNOME/mutter). By default ioscpy falls back to
+    /// X11/XWayland there so the window gets a titlebar. Linux only.
+    #[arg(long)]
+    pub wayland: bool,
+
     /// Hide the on-screen iOS keyboard while connected, so the mirror shows the
     /// full screen (you type from the Mac; the device acts as if a hardware
     /// keyboard is attached). The keyboard returns when ioscpy exits. iOS 16+.

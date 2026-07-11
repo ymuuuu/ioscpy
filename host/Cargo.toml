@@ -41,8 +41,11 @@ cocoa = "0.25"
 openh264 = "0.9"
 
 # Linux / other Unix (not macOS): native Wayland clipboard via wl-clipboard-rs.
+# wayland-client (same 0.31 line wl-clipboard-rs already pulls in) is used only
+# to probe the compositor for server-side decoration support (see wayland_compat.rs).
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
 arboard = { version = "3", default-features = false, features = ["wayland-data-control"] }
+wayland-client = "0.31"
 
 # Windows: Win32 clipboard (the wayland-data-control feature pulls wl-clipboard-rs,
 # which doesn't build here), plus getrandom for the handshake nonce (no /dev/urandom).

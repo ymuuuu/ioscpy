@@ -126,6 +126,10 @@ sure `$HOME/.local/bin` is on your `PATH`.
 H.264 decoding works on Linux through the `openh264` software decoder. Pass
 `--mjpeg` if you prefer the MJPEG path.
 
+On Wayland compositors that refuse server-side decorations (GNOME/mutter),
+ioscpy automatically falls back to X11/XWayland so the window gets a normal
+titlebar. Pass `--wayland` to stay on native Wayland instead.
+
 ## Windows
 
 There is no prebuilt for Windows yet. Build the host from source. The device package is the same as on macOS and Linux, installed from the Sileo/Zebra repo.
