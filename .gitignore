@@ -27,11 +27,12 @@ packaging/repo/out/
 __pycache__/
 *.pyc
 
+# Private planning docs, never published.
+priv-docs/
+
 # Secrets. Never commit device credentials, keys, or session tokens.
 *.pem
 id_rsa*
 *.token
 secrets.env
 .env
-docs/linux-h264.md
-docs/windows/
