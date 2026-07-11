@@ -71,7 +71,7 @@ clean:
 help:
 	@echo "ioscpy targets:"
 	@echo "  make install           run the Linux installer (deps + build + install)"
-	@echo "  make host-release      build macOS host binary (release)"
+	@echo "  make host-release      build the host binary (release)"
 	@echo "  make install-host      install ioscpy to $(PREFIX)/bin (on PATH)"
 	@echo "  make device-rootless   build rootless .deb (/var/jb)"
 	@echo "  make device-rootful    build rootful .deb (/)"

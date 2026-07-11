@@ -32,7 +32,8 @@ pub struct Cli {
 
     /// Stay on native Wayland even when the compositor draws no window
     /// decorations for us (GNOME/mutter). By default ioscpy falls back to
-    /// X11/XWayland there so the window gets a titlebar. Linux only.
+    /// X11/XWayland there so the window gets a titlebar.
+    #[cfg(all(unix, not(target_os = "macos")))]
     #[arg(long)]
     pub wayland: bool,
 

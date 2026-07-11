@@ -186,8 +186,8 @@ enable_usbmuxd() {
     fi
 
     local -a cmd=(sudo systemctl enable --now usbmuxd)
-    echo "+ ${cmd[*]}"
     if prompt "Enable and start usbmuxd with systemctl?"; then
+        echo "+ ${cmd[*]}"
         "${cmd[@]}"
     else
         err "usbmuxd not started"

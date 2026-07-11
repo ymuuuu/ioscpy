@@ -58,10 +58,17 @@ fn compositor_has_server_decorations() -> Option<bool> {
     Some(probe.has_decoration_manager)
 }
 
+fn env_set(name: &str) -> bool {
+    std::env::var_os(name).is_some_and(|v| !v.is_empty())
+}
+
 /// Call once at startup, before any window or clipboard is created and before
 /// any thread is spawned (this may mutate the process environment).
 pub fn apply_decoration_workaround(keep_native_wayland: bool) {
-    if std::env::var_os("WAYLAND_DISPLAY").map_or(true, |v| v.is_empty()) {
+    // WAYLAND_SOCKET (an inherited connection fd) takes precedence over
+    // WAYLAND_DISPLAY in libwayland and wayland-client alike, so either one
+    // means minifb would connect to Wayland.
+    if !env_set("WAYLAND_DISPLAY") && !env_set("WAYLAND_SOCKET") {
         return; // not a Wayland session (or already masked by the user)
     }
     if keep_native_wayland {
@@ -71,6 +78,7 @@ pub fn apply_decoration_workaround(keep_native_wayland: bool) {
         return;
     }
     std::env::remove_var("WAYLAND_DISPLAY");
+    std::env::remove_var("WAYLAND_SOCKET");
     eprintln!(
         "ioscpy: this Wayland compositor draws no window decorations for us \
          (no {DECORATION_MANAGER}); using X11/XWayland instead. \
