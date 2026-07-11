@@ -1,7 +1,7 @@
 # ioscpy top-level build orchestration.
 # Author: Lautaro Villarreal Culic' (https://lautarovculic.com)
 
-.PHONY: all host host-release install-host uninstall-host device device-rootless \
+.PHONY: all host host-release install install-host uninstall-host device device-rootless \
         device-rootful device-roothide release repo clean fmt clippy test help
 
 PREFIX ?= /usr/local
@@ -14,6 +14,9 @@ host:
 
 host-release:
 	cd host && cargo build --release
+
+install:
+	./install.sh
 
 # No host-release dependency on purpose: this target is usually run with sudo,
 # and root's PATH does not see a rustup-installed cargo. Build as your user
@@ -67,6 +70,7 @@ clean:
 
 help:
 	@echo "ioscpy targets:"
+	@echo "  make install           run the Linux installer (deps + build + install)"
 	@echo "  make host-release      build macOS host binary (release)"
 	@echo "  make install-host      install ioscpy to $(PREFIX)/bin (on PATH)"
 	@echo "  make device-rootless   build rootless .deb (/var/jb)"

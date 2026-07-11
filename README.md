@@ -56,6 +56,16 @@ ioscpy --version
 There is no prebuilt for Linux yet. Build the host from source. The device
 package is the same as on macOS, installed from the Sileo/Zebra repo above.
 
+Clone this repo, then run the installer:
+
+```bash
+./install.sh
+```
+
+`--yes` skips the confirmation prompts. `--prefix DIR` installs to `DIR` instead of `/usr/local` and omits `sudo` when the directory is under `$HOME`. `--uninstall` removes the installed binary.
+
+### Manual install
+
 Prereqs on Debian/Ubuntu:
 
 ```bash
@@ -82,6 +92,8 @@ ioscpy --version
 ```
 
 ## For Arch Linux
+
+`./install.sh` also works on Arch Linux.
 
 ```bash
 sudo pacman -S --needed \
